@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube</title>
+    <style>
+
+        body{
+            background-color: rgb(19, 19, 19);
+        }
+        #first{
+            margin: auto;
+   width: 90%;
+ 
+
+   height: 60px;
+   text-align: center;
+
+
+        }
+        #result {
+           
+            
+display: grid;
+width: 95%;
+margin: auto;
+margin: 2%;
+grid-template-columns: repeat(4,1fr);
+grid-gap:20px;
+height: 200px;
+
+
+        }
+        #body{
+        
+     display: grid;
+        
+        width: 95%;
+        margin: auto;
+margin: 2%;
+        grid-template-columns: repeat(4,1fr);
+      
+        grid-gap:20px;
+        
+        
+        
+                }
+            
+    
+        #result >div{
+            margin: 1%;
+           
+        }
+       #div1{
+           height: 180px;
+    
+        }
+        #search{
+            background-color: black;
+            font-size: 15px;
+            color: white;
+            width: 60%;
+            height: 40px;
+        }
+#button{
+    background-color:  rgb(19, 19, 19);
+    color: white;
+    width: 100px;
+    margin-left: 2%;
+    height: 42px;
+}
+ #first>img{
+    text-align: center;
+    float: left;
+    width: 120px;
+  
+    padding-top: 7px;
+    padding-left: 5px;
+   
+    height: 40px;
+}
+#result > div >img{
+    width: 100%;
+    height: 100%;
+}
+
+#result3 > #div1>img {
+    width: 100%;
+    height: 100%;
+  
+}
+    </style>
+</head>
+<body>
+   
+    <div id="first">
+        <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/youtube-logo-png-picture-2.png" alt="">
+        <input type="text" placeholder="Search" id="search">
+        <button id="button">Search</button>
+    </div>
+  
+    <div id="body"></div>
+    
+    <div id="result">
+     
+    </div>
+  
+
+
+
+      
+    
+</body>
+</html>
+<script>
+
+   
+
+document.querySelector("#button").addEventListener("click", youtube)
+
+let videodata=[]
+
+let key="AIzaSyAXnappmqYVlsrOQlvLvOyMKBr05TQndAc"
+function youtube(){
+
+    let search=document.querySelector("#search").value
+    let url=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=${key}&maxResults=20`
+
+    async function yt(){
+        try{
+            let res=await fetch(url)
+            let data=await res.json()
+            appendvideo(data.items)
+           
+        }
+        catch(error){
+
+        }
+    }
+    yt()
+
+
+
+}
+
+
+function appendvideo(data){
+    document.querySelector("#body").innerHTML=""
+    document.querySelector("#body").style.height="1%"
+    localStorage.setItem("red", JSON.stringify(data))
+  data.map((elem) =>{
+      let {snippet, id:{videoId}}=elem
+  
+
+let videodata={
+    snippet,
+    videoid:videoId
+}
+
+
+      
+    let thum=(snippet.thumbnails.high.url)
+    let img=document.createElement("img")
+    
+    img.src=thum
+    let div=document.createElement("div")
+    div.id="imp"
+    div.addEventListener("click", function(){
+        openvideo(videodata)
+    })
+   
+  
+    div.append(img)
+   document.querySelector("#result").append(div)
+})
+
+}
+
+function openvideo(a){
+    
+ 
+ 
+    localStorage.setItem("videodata", JSON.stringify(a))
+ window.location.href="ytvideo.html"
+ 
+}
+
+
+
+
+
+
+
+//sxsx
+
+
+let url2=`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&key=AIzaSyCrxY7xldyH2NeZKXMfH2FZtkEAJYAVpJU&maxResults=50`
+
+    async function yt2(){
+        
+    
+
+  
+        try{
+            let res=await fetch(url2)
+            let data=await res.json()
+            appendvideo2(data.items)
+           
+        }
+        catch(error){
+
+        }
+    }
+    yt2()
+
+    function appendvideo2(data){
+        
+        document.querySelector("#result").innerHTML=""
+    data.forEach((elem) =>{
+        let {snippet , id }=elem
+    
+let videodata={
+    snippet,
+    videoid:id
+}
+
+      
+    let thum=(snippet.thumbnails.high.url)
+    let img=document.createElement("img")
+   
+    img.src=thum
+    let div=document.createElement("div")
+    div.id="div1"
+    div.addEventListener("click", function(){
+        openvideo2(videodata)
+    })
+   
+  
+    div.append(img)
+    let ris=document.createElement("div")
+    ris.id="result3"
+    ris.append(div)
+
+   document.querySelector("#body").append(ris)
+})
+
+}
+
+function openvideo2(a){
+    console.log(a)
+   
+    console.log(videodata)
+    localStorage.setItem("videodata", JSON.stringify(a))
+ window.location.href="ytvideo.html"
+ 
+}
+
+
+
+
+</script>
